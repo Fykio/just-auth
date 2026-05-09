@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: just-auth-config
+  namespace: just-auth
+data:
+  DB_HOST: postgres
+  DB_PORT: "5432"
+  DB_NAME: auth_db
+  CORS_ORIGIN: "http://localhost:8888"
+  JWT_COOKIE_NAME: auth_token
+  BACKEND_PORT: "7777"
+  FRONTEND_PORT: "8888"

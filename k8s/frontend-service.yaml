@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: just-auth
+spec:
+  selector:
+    app: frontend
+  ports:
+    - port: 8888
+      targetPort: 8888
+  type: LoadBalancer

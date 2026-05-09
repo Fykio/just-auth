@@ -1,0 +1,96 @@
+# Environment variables (secrets)
+.env
+.env.*
+!.env.example
+
+# Python / Flask (backend)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+venv.bak/
+.env.local
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+*.log
+
+# Node / React / Vite (frontend)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+dist/
+dist-ssr/
+*.local
+.vite/
+.cache/
+*.tsbuildinfo
+
+# Docker
+*.pid
+docker-compose.override.yml
+.dockerignore
+*.tar.gz
+*.tar
+
+# Kubernetes (local secrets)
+*.secret.yaml
+k8s/*.secret.yaml
+!k8s/secret.yaml.example
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+*.sublime-*
+
+# Build outputs
+*.egg-info/
+*.egg
+build/
+develop-eggs/
+eggs/
+parts/
+sdist/
+var/
+wheels/
+*.whl
+
+# Testing
+.coverage
+.coverage.*
+.tox
+*.cover
+.hypothesis/
+.pytest_cache/
+coverage.xml
+
+# Logs and databases
+*.db
+*.sqlite
+*.sqlite3
+*.log
+*.pid
+
+# Misc
+*.retry
+*.tmp
+.cache/
+.envrc
+.terraform*

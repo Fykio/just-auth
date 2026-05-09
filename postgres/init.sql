@@ -1,0 +1,4 @@
+-- Table already created by backend's init_db()
+-- This file ensures the database exists.
+-- The backend will create the 'users' table if missing.
+-- Keep this file for future migrations.

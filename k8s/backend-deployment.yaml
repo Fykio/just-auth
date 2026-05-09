@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: just-auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      imagePullSecrets:
+      - name: ghcr-secret
+      containers:
+      - name: backend
+        image: ghcr.io/fykio/just-auth-backend:latest
+        imagePullPolicy: Always
+        env:
+        - name: DB_HOST
+          valueFrom: { configMapKeyRef: { name: just-auth-config, key: DB_HOST } }
+        - name: DB_PORT
+          valueFrom: { configMapKeyRef: { name: just-auth-config, key: DB_PORT } }
+        - name: DB_NAME
+          valueFrom: { configMapKeyRef: { name: just-auth-config, key: DB_NAME } }
+        - name: CORS_ORIGIN
+          valueFrom: { configMapKeyRef: { name: just-auth-config, key: CORS_ORIGIN } }
+        - name: JWT_COOKIE_NAME
+          valueFrom: { configMapKeyRef: { name: just-auth-config, key: JWT_COOKIE_NAME } }
+        - name: DB_USER
+          valueFrom: { secretKeyRef: { name: just-auth-secret, key: DB_USER } }
+        - name: DB_PASSWORD
+          valueFrom: { secretKeyRef: { name: just-auth-secret, key: DB_PASSWORD } }
+        - name: JWT_SECRET
+          valueFrom: { secretKeyRef: { name: just-auth-secret, key: JWT_SECRET } }
+        ports:
+        - containerPort: 7777
