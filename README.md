@@ -85,4 +85,48 @@ kubectl delete ns just-auth
 
 ## Environment variables
 
-Update the values of the variables in `.env` to match.
+Update the values of configuration variables
+
+```bash
+# alphanumeric string, only letters and numbers, like auth_db_user
+DB_USER=
+
+# alphanumeric string (can contain special characters), like SuperS3cr3tP@ssw0rd
+DB_PASSWORD=
+
+# localhost or postgres
+DB_HOST=
+
+# port number, integer, PostgreSQL standard port is 5432, you may use a variant of that, like 5433
+DB_PORT=
+
+# alphanumeric string (database name), like auth_db
+DB_NAME=
+
+# any random string 
+JWT_SECRET=
+
+# any random string 
+JWT_COOKIE_NAME=
+
+# you can use the same port as the one in Dockerfile, i.e. 7777
+BACKEND_PORT=
+
+# you can use the same port as the one in Dockerfile, i.e. 8888
+FRONTEND_PORT=
+
+# URL of the frontend application, like http://localhost:8888
+CORS_ORIGIN=
+
+# GitHub repository name, like github-username/this-repository-name
+GITHUB_REPOSITORY=
+
+# GitHub repository owner, use your github-username
+GITHUB_REPOSITORY_OWNER=
+
+# a valid GHCR token (from github settings, it should start with ghp_...)
+GHCR_TOKEN=
+
+# your github-username
+GH_USERNAME=
+```
