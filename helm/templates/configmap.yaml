@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: just-auth-config
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "just-auth.labels" . | nindent 4 }}
+data:
+  DB_HOST: {{ .Values.backend.env.DB_HOST | quote }}
+  DB_PORT: {{ .Values.backend.env.DB_PORT | quote }}
+  DB_NAME: {{ .Values.postgres.auth.database | quote }}
+  CORS_ORIGIN: {{ .Values.backend.env.CORS_ORIGIN | quote }}
+  JWT_COOKIE_NAME: {{ .Values.backend.env.JWT_COOKIE_NAME | quote }}

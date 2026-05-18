@@ -1,0 +1,24 @@
+Thank you for installing just-auth.
+
+Your release is named {{ .Release.Name }}.
+
+To access the frontend:
+
+1. Get the service URL:
+   {{- if eq .Values.frontend.service.type "NodePort" }}
+   export NODE_PORT=$(kubectl get svc --namespace {{ .Values.namespace }} frontend -o jsonpath="{.spec.ports[0].nodePort}")
+   export NODE_IP=$(kubectl get nodes --namespace {{ .Values.namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+   echo "http://$NODE_IP:$NODE_PORT"
+   {{- else if eq .Values.frontend.service.type "LoadBalancer" }}
+   kubectl get svc --namespace {{ .Values.namespace }} frontend -w
+   {{- else }}
+   kubectl port-forward --namespace {{ .Values.namespace }} svc/frontend 8888:8888
+   {{- end }}
+
+2. Open the displayed URL in your browser.
+
+To check pod status:
+  kubectl get pods --namespace {{ .Values.namespace }}
+
+To view logs of the backend:
+  kubectl logs --namespace {{ .Values.namespace }} -l app.kubernetes.io/name=just-auth,app.kubernetes.io/component=backend

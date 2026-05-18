@@ -44,7 +44,7 @@ Using Kubernetes to orchestrate the application runtime seamlessly across a clus
 - [Kind](https://kind.sigs.k8s.io/) installed and running (for local clusters) or 
 - [Microk8s](https://microk8s.io/) installed and running (for local clusters) or 
 - Access to a Kubernetes cluster (remote)
-- [Kubectl](https://kubernetes.io/docs/tasks/tools/) installed and context configured
+- [kubectl](https://kubernetes.io/docs/tasks/tools/) installed and context configured
 - Access to the internet to pull images
 
 ### Commands
@@ -69,9 +69,9 @@ kubectl create namespace just-auth
 kubectl create secret docker-registry ghcr-secret \
   --namespace=just-auth \
   --docker-server=ghcr.io \
-  --docker-username=fykio \
-  --docker-password=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 \
-  --docker-email=olufemi.akinboye@darey.io
+  --docker-username=[YOUR-GITHUB-USERNAME] \
+  --docker-password= [YOUR-GITHUB-PAT] \
+  --docker-email=[YOUR-EMAIL]
 
 # apply kubernetes resources from just-auth folder
 kubectl apply -f k8s/
@@ -81,6 +81,64 @@ kubectl port-forward -n just-auth svc/frontend 8888:8888
 
 # delete the namespace to clean up all resources
 kubectl delete ns just-auth
+```
+
+## Run Lab 3 - Helm
+
+### Prerequisites
+
+- [Helm](https://helm.sh/) installed and running
+
+### Directory Structure of Helm
+
+```text
+helm/
+├── Chart.yaml
+├── values.yaml
+└── templates/
+    ├── _helpers.tpl
+    ├── NOTES.txt
+    ├── backend-deployment.yaml
+    ├── backend-service.yaml
+    ├── frontend-deployment.yaml
+    ├── frontend-service.yaml
+    ├── postgres-deployment.yaml
+    ├── postgres-service.yaml
+    ├── postgres-init-configmap.yaml
+    ├── configmap.yaml
+    ├── secret.yaml
+    ├── pvc.yaml
+    └── imagepullsecret.yaml
+```
+
+### Commands
+
+```bash
+# navigate to the project directory
+cd just-auth
+
+# confirm prerequisites
+helm version
+
+# run workflow.sh to build and push images to GHCR
+# first ensure this file is executable
+chmod +x workflow.sh
+# then run it
+bash workflow.sh
+
+# update values.yaml file with your own values appropriately
+
+# install the chart
+helm install just-auth ./helm --namespace just-auth --create-namespace
+
+# upgrade
+helm upgrade just-auth ./helm --namespace just-auth
+
+# forwards frontend to localhost:8888
+kubectl port-forward -n just-auth svc/frontend 8888:8888
+
+# uninstall
+helm uninstall just-auth --namespace just-auth
 ```
 
 ## Environment variables

@@ -1,0 +1,71 @@
+# Global settings
+namespace: just-auth
+
+# Image pull secret for GHCR (private registry)
+imagePullSecret:
+  create: true
+  name: ghcr-secret
+  registry: ghcr.io
+  username: [YOUR-GITHUB-USERNAME]
+  password: [YOUR-GITHUB-PAT]
+  email: [YOUR-EMAIL]
+
+# Backend configuration
+backend:
+  replicaCount: 1
+  image:
+    repository: ghcr.io/fykio/just-auth-backend
+    tag: latest
+    pullPolicy: Always
+  service:
+    type: ClusterIP
+    port: 7777
+    targetPort: 7777
+  resources: {}
+  env:
+    DB_HOST: postgres
+    DB_PORT: "5432"
+    DB_NAME: auth_db
+    CORS_ORIGIN: "http://localhost:8888"
+    JWT_COOKIE_NAME: auth_token
+  # Secrets are mounted from the 'just-auth-secret' (see secret.yaml)
+
+# Frontend configuration
+frontend:
+  replicaCount: 1
+  image:
+    repository: ghcr.io/fykio/just-auth-frontend
+    tag: latest
+    pullPolicy: Always
+  service:
+    type: NodePort       # Change to LoadBalancer if MetalLB/cloud LB is available in your cluster
+    port: 8888
+    targetPort: 8888
+    nodePort: 30080      # optional, range 30000-32767
+  resources: {}
+
+# PostgreSQL configuration
+postgres:
+  replicaCount: 1
+  image:
+    repository: postgres
+    tag: 15-alpine
+    pullPolicy: IfNotPresent
+  service:
+    port: 5432
+    targetPort: 5432
+  persistence:
+    enabled: true
+    size: 1Gi
+    storageClass: standard   # Minikube's default
+  resources: {}
+  # Database credentials (will be stored in a Secret)
+  auth:
+    username: auth_user
+    password: StrongP@ssw0rd
+    database: auth_db
+
+# Application secrets (overrides for JWT, etc.)
+secrets:
+  jwtSecret: "[ENCRYPTION_KEY]" # 32-character string
+  # dbUser, dbPassword, dbName are taken from postgres.auth
